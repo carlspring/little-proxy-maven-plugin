@@ -1,0 +1,51 @@
+Example usage:
+
+    <project ...>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.carlspring.maven</groupId>
+                    <artifactId>little-proxy-maven-plugin</artifactId>
+                    <version>${version.little.proxy.maven.plugin}</version>
+
+                    <configuration>
+
+                    </configuration>
+
+                    <executions>
+                        <execution>
+                            <id>start</id>
+                            <goals>
+                                <goal>start</goal>
+                            </goals>
+
+                            <configuration>
+                                <userCredentials>
+                                    <admin>password123</admin>
+                                    <testuser>password</testuser>
+                                </userCredentials>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>stop</id>
+                            <goals>
+                                <goal>stop</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </build>
+    </project>
+
+The maven property proxy.skip, if set to true, will prevent the plugin from launching LittleProxy. It can also be set with:
+
+    <plugin>
+        <groupId>org.carlspring.maven</groupId>
+        <artifactId>little-proxy-maven-plugin</artifactId>
+        <version>${version.little.proxy.plugin}</version>
+        <configuration>
+            <skip>true</skip>
+        </configuration>
+        ...
+     </plugin>

@@ -1,0 +1,45 @@
+<project>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.carlspring.maven</groupId>
+    <artifactId>dummy-project</artifactId>
+    <version>0.1-SNAPSHOT</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.carlspring.maven</groupId>
+                <artifactId>little-proxy-maven-plugin</artifactId>
+                <version>${version.little.proxy.maven.plugin}</version>
+
+                <configuration>
+
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+
+                        <configuration>
+                            <userCredentials>
+                                <admin>password123</admin>
+                                <testuser>password</testuser>
+                            </userCredentials>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
