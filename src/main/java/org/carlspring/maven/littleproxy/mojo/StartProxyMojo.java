@@ -17,6 +17,7 @@ package org.carlspring.maven.littleproxy.mojo;
  */
 
 import org.carlspring.maven.littleproxy.authentication.SimpleProxyAuthenticator;
+import org.carlspring.maven.littleproxy.server.ShutdownServer;
 
 import java.util.Map;
 
@@ -51,8 +52,6 @@ public class StartProxyMojo
         {
             try
             {
-                getLog().info("Starting the LittleProxy server ...");
-
                 if (userCredentials != null && userCredentials.size() > 0)
                 {
                     getLog().debug("Creating proxy authenticator with the following users:");
@@ -68,6 +67,8 @@ public class StartProxyMojo
                 {
                     proxyServer = getServerBootstrap().start();
                 }
+
+                startShutdownServer();
             }
             catch (Exception e)
             {
@@ -78,6 +79,14 @@ public class StartProxyMojo
         {
             throw new MojoExecutionException(e.getMessage(), e);
         }
+    }
+
+    private void startShutdownServer()
+    {
+        final ShutdownServer shutdownServer = new ShutdownServer();
+        shutdownServer.setPort(shutdownPort);
+        shutdownServer.setShutdownHash(getHash());
+        shutdownServer.startServer();
     }
 
     public boolean isFailIfAlreadyRunning()

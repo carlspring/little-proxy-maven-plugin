@@ -16,14 +16,13 @@ package org.carlspring.maven.littleproxy.mojo;
  * limitations under the License.
  */
 
+import java.io.*;
+import java.net.Socket;
+
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-
-import java.io.File;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  * @author Martin Todorov (carlspring@gmail.com)
@@ -46,8 +45,26 @@ public class StopProxyMojo
     {
         try
         {
-            // TODO: Implement this properly:
-            proxyServer.stop();
+            Socket socket = new Socket("localhost", getShutdownPort());
+            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+            bw.write(getHash());
+            bw.newLine();
+            bw.flush();
+
+            final String response = br.readLine();
+
+            getLog().debug(response);
+
+            if (response == null || !response.contains("success"))
+            {
+                throw new MojoExecutionException("Failed to shutdown gracefully!");
+            }
+            else
+            {
+                getLog().info("LittleProxy shutdown successful.");
+            }
         }
         catch (Exception e)
         {

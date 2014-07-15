@@ -42,14 +42,26 @@ public abstract class AbstractLittleProxyMojo
     int port;
 
     /**
+     * The port to start LittleProxy on.
+     */
+    @Parameter(property = "proxy.shutdown.port", defaultValue = "8181")
+    int shutdownPort;
+
+    /**
+     * Whether to bypass running LittleProxy.
+     */
+    @Parameter(property = "proxy.shutdown.hash")
+    static String hash;
+
+    /**
      * Whether to bypass running LittleProxy.
      */
     @Parameter(property = "proxy.skip")
     boolean skip;
 
-    HttpProxyServerBootstrap serverBootstrap;
+    static HttpProxyServerBootstrap serverBootstrap;
 
-    HttpProxyServer proxyServer;
+    static HttpProxyServer proxyServer;
 
 
     @Override
@@ -72,8 +84,6 @@ public abstract class AbstractLittleProxyMojo
     {
         try
         {
-            getLog().info("Initializing LittleProxy on localhost:" + getPort() + "...");
-
             serverBootstrap = DefaultHttpProxyServer.bootstrap()
                                                     .plusActivityTracker(new LoggingActivityTracker())
                                                     .withPort(getPort());
@@ -102,7 +112,7 @@ public abstract class AbstractLittleProxyMojo
         this.serverBootstrap = serverBootstrap;
     }
 
-    public HttpProxyServer getProxyServer()
+    public static HttpProxyServer getProxyServer()
     {
         return proxyServer;
     }
@@ -120,6 +130,26 @@ public abstract class AbstractLittleProxyMojo
     public void setPort(int port)
     {
         this.port = port;
+    }
+
+    public int getShutdownPort()
+    {
+        return shutdownPort;
+    }
+
+    public void setShutdownPort(int shutdownPort)
+    {
+        this.shutdownPort = shutdownPort;
+    }
+
+    public String getHash()
+    {
+        return hash;
+    }
+
+    public void setHash(String hash)
+    {
+        this.hash = hash;
     }
 
     public boolean isSkip()

@@ -9,7 +9,8 @@ Example usage:
                     <version>${version.little.proxy.maven.plugin}</version>
 
                     <configuration>
-
+                        <!-- A secret hash to use when shutting down -->
+                        <hash>5FD4F8E2A</hash>
                     </configuration>
 
                     <executions>
@@ -20,6 +21,7 @@ Example usage:
                             </goals>
 
                             <configuration>
+                                <!-- Define a list of valid credentials -->
                                 <userCredentials>
                                     <admin>password123</admin>
                                     <testuser>password</testuser>
@@ -31,6 +33,11 @@ Example usage:
                             <goals>
                                 <goal>stop</goal>
                             </goals>
+
+                            <configuration>
+                                <!-- The port to listen on for shutdown requests (this is the default): -->
+                                <shutdownPort>8181</shutdownPort>
+                            </configuration>
                         </execution>
                     </executions>
                 </plugin>

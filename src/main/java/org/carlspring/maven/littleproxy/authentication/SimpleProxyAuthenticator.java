@@ -24,8 +24,6 @@ public class SimpleProxyAuthenticator
     public boolean authenticate(String username,
                                 String password)
     {
-        System.out.println("Checking credentials for " + username + ":" + password);
-
         return userCredentials.containsKey(username) && password.equals(userCredentials.get(username));
     }
 
