@@ -35,7 +35,7 @@ public class StopProxyMojo
     /**
      * Whether to fail, if LittleProxy is not running.
      */
-    @Parameter(property = "proxy.fail.if.already.running", defaultValue = "true")
+    @Parameter(property = "proxy.fail.if.not.running", defaultValue = "true")
     boolean failIfNotRunning;
 
 
