@@ -5,7 +5,7 @@
 
     <groupId>org.carlspring.maven</groupId>
     <artifactId>little-proxy-maven-plugin</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
 
     <name>LittleProxy Maven Plugin</name>
@@ -219,7 +219,7 @@
         <connection>scm:git:git@github.com:carlspring/little-proxy-maven-plugin.git</connection>
         <url>scm:git:git@github.com:carlspring/little-proxy-maven-plugin.git</url>
         <developerConnection>scm:git:git@github.com:carlspring/little-proxy-maven-plugin.git</developerConnection>
-        <tag>little-proxy-maven-plugin-1.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
