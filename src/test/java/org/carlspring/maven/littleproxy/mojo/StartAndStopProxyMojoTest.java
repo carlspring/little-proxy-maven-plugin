@@ -51,7 +51,7 @@ public class StartAndStopProxyMojoTest
     Map<String, String> userCredentials = new LinkedHashMap<String, String>();
 
 
-    protected void setUp()
+    public void setUp()
             throws Exception
     {
         super.setUp();
