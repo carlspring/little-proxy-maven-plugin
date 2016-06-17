@@ -23,6 +23,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Martin Todorov (carlspring@gmail.com)
@@ -37,15 +39,18 @@ public class StopProxyMojo
      */
     @Parameter(property = "proxy.fail.if.not.running", defaultValue = "true")
     boolean failIfNotRunning;
+    
+    private static Logger logger = LoggerFactory.getLogger(StopProxyMojo.class);
 
 
     @Override
     public void doExecute()
             throws MojoExecutionException, MojoFailureException
     {
+        Socket socket = null;
         try
         {
-            Socket socket = new Socket("localhost", getShutdownPort());
+            socket = new Socket("localhost", getShutdownPort());
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
@@ -69,6 +74,20 @@ public class StopProxyMojo
         catch (Exception e)
         {
             throw new MojoExecutionException(e.getMessage(), e);
+        }
+        finally
+        {
+            if (socket != null)
+            {
+                try 
+                {
+                    socket.close();
+                } 
+                catch (IOException e) 
+                {
+                    logger.trace("Exception while closing Socket.", e);
+                }   
+            }
         }
     }
 
