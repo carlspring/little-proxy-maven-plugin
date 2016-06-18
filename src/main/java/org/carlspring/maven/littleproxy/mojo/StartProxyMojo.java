@@ -20,6 +20,7 @@ import org.carlspring.maven.littleproxy.authentication.SimpleProxyAuthenticator;
 import org.carlspring.maven.littleproxy.server.ShutdownServer;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -55,9 +56,9 @@ public class StartProxyMojo
                 if (userCredentials != null && userCredentials.size() > 0)
                 {
                     getLog().debug("Creating proxy authenticator with the following users:");
-                    for (String username : userCredentials.keySet())
+                    for (Entry<String, String> user : userCredentials.entrySet())
                     {
-                        getLog().debug(" -> " + username + ":" + userCredentials.get(username));
+                        getLog().debug(" -> " + user.getKey() + ":" + user.getValue());
                     }
 
                     final SimpleProxyAuthenticator proxyAuthenticator = new SimpleProxyAuthenticator(userCredentials);
