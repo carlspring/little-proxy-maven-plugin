@@ -17,7 +17,6 @@ package org.carlspring.maven.littleproxy.mojo;
  */
 
 import javax.net.ssl.SSLSession;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 import io.netty.handler.codec.http.HttpRequest;

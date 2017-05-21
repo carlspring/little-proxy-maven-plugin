@@ -16,7 +16,11 @@ package org.carlspring.maven.littleproxy.mojo;
  * limitations under the License.
  */
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 
 import org.apache.maven.plugin.MojoExecutionException;
@@ -64,6 +68,17 @@ public class StopProxyMojo
             else
             {
                 getLog().info("LittleProxy shutdown successful.");
+            }
+        }
+        catch (ConnectException e)
+        {
+            if (failIfNotRunning && !e.getMessage().contains("Connection refused"))
+            {
+                throw new MojoExecutionException(e.getMessage(), e);
+            }
+            else
+            {
+                getLog().warn("Nothing to shut down, as the LittleProxy service was not running on port " + port + ".");
             }
         }
         catch (Exception e)

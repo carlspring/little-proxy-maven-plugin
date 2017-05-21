@@ -38,10 +38,10 @@ public abstract class AbstractLittleProxyMojoTest
     protected static final String POM_PLUGIN = TARGET_TEST_CLASSES + "/poms/pom-start.xml";
 
 
-    protected Mojo lookupConfiguredMojo(String goal, String basedir)
+    protected Mojo lookupConfiguredMojo(String goal, String pomFile)
             throws Exception
     {
-        MavenProject project = readMavenProject(new File(basedir));
+        MavenProject project = readMavenProject(new File(pomFile));
 
         return lookupConfiguredMojo(project, goal);
     }
