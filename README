@@ -1,1 +1,0 @@
-This is a simple Maven plugin to start/stop a LittleProxy server. It can be quite handy when you would like to write tests that rely on a proxy server to be available.
