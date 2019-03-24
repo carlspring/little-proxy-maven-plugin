@@ -1,7 +1,7 @@
 package org.carlspring.maven.littleproxy.mojo;
 
 /**
- * Copyright 2014, Carlspring Consulting & Development Ltd.
+ * Copyright 2019, Carlspring Consulting & Development Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class StopProxyMojo
 
     @Override
     public void doExecute()
-            throws MojoExecutionException, MojoFailureException
+            throws MojoExecutionException
     {
         try
         {

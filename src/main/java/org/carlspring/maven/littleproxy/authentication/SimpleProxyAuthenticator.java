@@ -12,7 +12,7 @@ public class SimpleProxyAuthenticator
         implements ProxyAuthenticator
 {
 
-    private Map<String, String> userCredentials = new LinkedHashMap<String, String>();
+    private Map<String, String> userCredentials = new LinkedHashMap<>();
 
 
     public SimpleProxyAuthenticator(Map<String, String> userCredentials)
@@ -25,6 +25,12 @@ public class SimpleProxyAuthenticator
                                 String password)
     {
         return userCredentials.containsKey(username) && password.equals(userCredentials.get(username));
+    }
+
+    @Override
+    public String getRealm()
+    {
+        return "LittleProxy";
     }
 
     public Map<String, String> getUserCredentials()

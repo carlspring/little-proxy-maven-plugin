@@ -22,6 +22,11 @@
         </license>
     </licenses>
 
+    <organization>
+        <name>Carlspring Consulting &amp; Development Ltd.</name>
+        <url>http://www.carlspring.org/</url>
+    </organization>
+
     <developers>
         <developer>
             <name>Martin Todorov</name>
@@ -29,11 +34,13 @@
         </developer>
     </developers>
 
+    <inceptionYear>2019</inceptionYear>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <version.littleproxy>1.0.0-beta8</version.littleproxy>
-        <version.maven>3.2.1</version.maven>
+        <version.littleproxy>1.1.2</version.littleproxy>
+        <version.maven>3.6.0</version.maven>
         <version.little.proxy.maven.plugin>${project.version}</version.little.proxy.maven.plugin>
     </properties>
 
@@ -62,18 +69,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.8.0</version>
 
                 <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <debug>true</debug>
-                    <source>1.6</source>
-                    <target>1.6</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.0.1</version>
 
                 <executions>
                     <execution>
@@ -84,12 +91,31 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.amashchenko.maven.plugin</groupId>
+                <artifactId>gitflow-maven-plugin</artifactId>
+                <version>1.11.0</version>
+                <configuration>
+                    <gitFlowConfig>
+                        <developmentBranch>master</developmentBranch>
+                    </gitFlowConfig>
+                    <commitMessages>
+                        <!--
+                            The release finish message specifically does not have a [release], so that Jenkins
+                            will build the new development version.
+                          -->
+                        <releaseFinishMessage>[release] Set the next development version.</releaseFinishMessage>
+                        <releaseFinishMergeMessage>[release] Merge branch release/@{version}</releaseFinishMergeMessage>
+                        <tagReleaseMessage>[release] Tag release</tagReleaseMessage>
+                    </commitMessages>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <!-- taken from http://maven.apache.org/plugin-tools/maven-plugin-plugin/examples/using-annotations.html -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.6.0</version>
                 <configuration>
                     <!-- see http://jira.codehaus.org/browse/MNG-5346 -->
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
@@ -114,7 +140,7 @@
             <plugin>
                 <groupId>org.codehaus.plexus</groupId>
                 <artifactId>plexus-component-metadata</artifactId>
-                <version>1.5.5</version>
+                <version>2.0.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -123,19 +149,6 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5</version>
-
-                <configuration>
-                    <arguments>-Pgpg</arguments>
-                    <releaseProfiles>gpg</releaseProfiles>
-                    <mavenExecutorId>forked-path</mavenExecutorId>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 
@@ -144,6 +157,12 @@
             <groupId>org.littleshoot</groupId>
             <artifactId>littleproxy</artifactId>
             <version>${version.littleproxy}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
+            <version>3.2.0</version>
         </dependency>
 
         <dependency>
@@ -176,27 +195,19 @@
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.2</version>
+            <version>3.6.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-component-annotations</artifactId>
-            <version>1.5.5</version>
+            <version>2.0.0</version>
         </dependency>
-
-        <!--
-        <dependency>
-            <groupId>org.eclipse.aether</groupId>
-            <artifactId>aether-api</artifactId>
-            <version>1.0.0.v20140518</version>
-        </dependency>
-        -->
 
         <dependency>
             <groupId>org.apache.maven.plugin-testing</groupId>
             <artifactId>maven-plugin-testing-harness</artifactId>
-            <version>3.1.0</version>
+            <version>3.3.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -210,7 +221,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -235,15 +246,29 @@
 
     <profiles>
         <profile>
-            <id>gpg</id>
-
+            <id>sign-artifacts</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
-
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -251,6 +276,15 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                    <keyname>${gpg.keyid}</keyname>
+                                    <gpgArguments>
+                                        <arg>--pinentry-mode</arg>
+                                        <arg>loopback</arg>
+                                        <arg>--passphrase-file</arg>
+                                        <arg>${gpg.passfile}</arg>
+                                    </gpgArguments>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

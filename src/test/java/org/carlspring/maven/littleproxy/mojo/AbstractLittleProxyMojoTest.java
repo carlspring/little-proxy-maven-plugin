@@ -1,9 +1,6 @@
 package org.carlspring.maven.littleproxy.mojo;
 
-import java.io.File;
 import java.io.IOException;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
@@ -17,13 +14,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.ProxyAuthenticationStrategy;
 import org.apache.http.util.EntityUtils;
-import org.apache.maven.execution.DefaultMavenExecutionRequest;
-import org.apache.maven.execution.MavenExecutionRequest;
-import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.ProjectBuilder;
-import org.apache.maven.project.ProjectBuildingRequest;
 import org.junit.Ignore;
 
 /**
@@ -38,23 +29,6 @@ public abstract class AbstractLittleProxyMojoTest
     protected static final String POM_PLUGIN = TARGET_TEST_CLASSES + "/poms/pom-start.xml";
 
 
-    protected Mojo lookupConfiguredMojo(String goal, String pomFile)
-            throws Exception
-    {
-        MavenProject project = readMavenProject(new File(pomFile));
-
-        return lookupConfiguredMojo(project, goal);
-    }
-
-    private MavenProject readMavenProject(File pom)
-            throws Exception
-    {
-        MavenExecutionRequest request = new DefaultMavenExecutionRequest();
-        request.setBaseDirectory(pom.getParentFile());
-        ProjectBuildingRequest configuration = request.getProjectBuildingRequest();
-
-        return lookup(ProjectBuilder.class).build(pom, configuration).getProject();
-    }
 
     protected CloseableHttpClient getCloseableHttpClientWithAuthenticatedProxy(HttpHost proxy)
     {
@@ -90,6 +64,7 @@ public abstract class AbstractLittleProxyMojoTest
             {
                 System.out.println("----------------------------------------");
                 System.out.println(response.getStatusLine());
+
                 EntityUtils.consume(response.getEntity());
             }
             finally
