@@ -23,19 +23,6 @@
                         <goals>
                             <goal>start</goal>
                         </goals>
-
-                        <configuration>
-                            <userCredentials>
-                                <admin>password123</admin>
-                                <testuser>password</testuser>
-                            </userCredentials>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop</id>
-                        <goals>
-                            <goal>stop</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
