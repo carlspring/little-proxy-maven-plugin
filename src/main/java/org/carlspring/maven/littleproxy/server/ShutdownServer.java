@@ -41,9 +41,10 @@ public class ShutdownServer
             @Override
             public void run()
             {
+                ServerSocket serverSocket = null;
                 try
                 {
-                    ServerSocket serverSocket = new ServerSocket(getPort());
+                    serverSocket = new ServerSocket(getPort());
 
                     logger.info("Accepting shutdown requests on port " + getPort() +  "...");
 
@@ -56,7 +57,20 @@ public class ShutdownServer
                 }
                 catch (IOException e)
                 {
-                    e.printStackTrace();
+                    logger.debug("Exception while creating ServerSocket.",e);
+                }
+                finally
+                {
+                    if (serverSocket != null)
+                    {
+                        try 
+                        {
+                            serverSocket.close();
+                        } catch (IOException e) 
+                        {
+                            logger.trace("Exception while closing ServerSocket.", e);
+                        }
+                    }
                 }
             }
         };
@@ -110,7 +124,7 @@ public class ShutdownServer
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                logger.trace("", e);
             }
             finally
             {
@@ -122,7 +136,7 @@ public class ShutdownServer
                     }
                     catch (IOException e)
                     {
-                        e.printStackTrace();
+                        logger.trace("", e);
                     }
                 }
                 if (clientSocket != null)
@@ -133,7 +147,7 @@ public class ShutdownServer
                     }
                     catch (IOException e)
                     {
-                        e.printStackTrace();
+                        logger.trace("", e);
                     }
                 }
             }
